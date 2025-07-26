@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pães & Derivados - Comunidade de Amantes de Pães</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #8B4513;
+            --secondary: #D2691E;
+            --accent: #FFD700;
+            --light: #FFF8DC;
+            --dark: #3E2723;
+            --success: #4CAF50;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--dark);
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #ffc400;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .post-image {
+            height: 200px;
+            width: 100%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 3rem;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-description {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background-color: var(--light);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            position: relative;
+            animation: modalOpen 0.3s ease;
+        }
+
+        @keyframes modalOpen {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: #777;
+            font-size: 1rem;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-bread-slice"></i>
+                <h1>Pães & Derivados</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="#"><i class="fas fa-utensils"></i> Receitas</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Comunidade</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Sobre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Compartilhe sua paixão por pães</h2>
+            <p>Junte-se à comunidade de amantes de pães e derivados. Compartilhe receitas, fotos e experiências!</p>
+            <button class="btn" onclick="openModal('postModal')">
+                <i class="fas fa-plus"></i> Nova Postagem
+            </button>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">1,248</div>
+                <div class="stat-label">Membros</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3,562</div>
+                <div class="stat-label">Postagens</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8,934</div>
+                <div class="stat-label">Comentários</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Últimas Postagens</h2>
+        <div class="posts-grid" id="postsContainer">
+            <!-- Posts serão adicionados aqui via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal para nova postagem -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('postModal')">&times;</span>
+            <h2><i class="fas fa-bread-slice"></i> Nova Postagem</h2>
+            <form id="postForm">
+                <div class="form-group">
+                    <label for="postTitle">Título</label>
+                    <input type="text" id="postTitle" class="form-control" placeholder="Dê um título à sua postagem" required>
+                </div>
+                <div class="form-group">
+                    <label for="postDescription">Descrição</label>
+                    <textarea id="postDescription" class="form-control" placeholder="Descreva sua receita, experiência ou dica..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="postTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="postTags" class="form-control" placeholder="ex: pão francês, brioche, croissant">
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> Publicar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <p>&copy; 2023 Pães & Derivados. Todos os direitos reservados.</p>
+        <p>Compartilhe sua paixão por pães com a comunidade!</p>
+    </footer>
+
+    <script>
+        // Dados iniciais
+        let posts = [
+            {
+                id: 1,
+                title: "Pão Francês Perfeito",
+                description: "Aprenda a fazer o pão francês mais crocante e macio que você já provou. Segredo está na fermentação!",
+                author: "Maria Silva",
+                date: "2023-06-15",
+                tags: ["pão francês", "tradicional", "receita"]
+            },
+            {
+                id: 2,
+                title: "Brioche Caseira",
+                description: "Receita de brioche fofinha e dourada, perfeita para o café da manhã. Leva manteiga e ovos de qualidade!",
+                author: "Carlos Oliveira",
+                date: "2023-06-12",
+                tags: ["brioche", "doce", "café da manhã"]
+            },
+            {
+                id: 3,
+                title: "Croissant de Forno",
+                description: "Croissants caseiros que rivalizam com os da melhor padaria. Processo demorado mas resultado incrível!",
+                author: "Ana Costa",
+                date: "2023-06-10",
+                tags: ["croissant", "francês", "artesanal"]
+            }
+        ];
+
+        // Funções para manipulação do DOM
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('postsContainer');
+            container.innerHTML = '';
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post-card';
+                postElement.innerHTML = `
+                    <div class="post-image">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <div class="post-content">
+                        <h3 class="post-title">${post.title}</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> ${post.author}</span>
+                            <span><i class="fas fa-calendar"></i> ${formatDate(post.date)}</span>
+                        </div>
+                        <p class="post-description">${post.description}</p>
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i> Curtir
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-comment"></i> Comentar
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-share"></i> Compartilhar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(postElement);
+            });
+        }
+
+        function formatDate(dateString) {
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('pt-BR', options);
+        }
+
+        // Evento para o formulário de nova postagem
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('postTitle').value;
+            const description = document.getElementById('postDescription').value;
+            const tagsInput = document.getElementById('postTags').value;
+            const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : [];
+            
+            const newPost = {
+                id: posts.length + 1,
+                title: title,
+                description: description,
+                author: "Você",
+                date: new Date().toISOString().split('T')[0],
+                tags: tags
+            };
+            
+            posts.unshift(newPost);
+            renderPosts();
+            closeModal('postModal');
+            
+            // Resetar o formulário
+            this.reset();
+        });
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPosts();
+        });
+    </script>
+</body>
+</html>
