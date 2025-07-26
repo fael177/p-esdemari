@@ -409,15 +409,15 @@
     <div class="container">
         <div class="stats">
             <div class="stat-item">
-                <div class="stat-number">1,248</div>
+                <div class="stat-number" id="membersCount">0</div>
                 <div class="stat-label">Membros</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">3,562</div>
+                <div class="stat-number" id="postsCount">0</div>
                 <div class="stat-label">Postagens</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number">8,934</div>
+                <div class="stat-number" id="commentsCount">0</div>
                 <div class="stat-label">Comentários</div>
             </div>
         </div>
@@ -465,10 +465,37 @@
     </footer>
 
     <script>
+        // Função para gerar ID único
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Função para salvar dados no localStorage
+        function saveToStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (e) {
+                console.error('Erro ao salvar dados:', e);
+                return false;
+            }
+        }
+
+        // Função para carregar dados do localStorage
+        function loadFromStorage(key, defaultValue = null) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
+                return defaultValue;
+            }
+        }
+
         // Dados iniciais
-        let posts = [
+        let posts = loadFromStorage('paesPosts', [
             {
-                id: 1,
+                id: generateId(),
                 title: "Pão Francês Perfeito",
                 description: "Aprenda a fazer o pão francês mais crocante e macio que você já provou. Segredo está na fermentação!",
                 author: "Maria Silva",
@@ -476,7 +503,7 @@
                 tags: ["pão francês", "tradicional", "receita"]
             },
             {
-                id: 2,
+                id: generateId(),
                 title: "Brioche Caseira",
                 description: "Receita de brioche fofinha e dourada, perfeita para o café da manhã. Leva manteiga e ovos de qualidade!",
                 author: "Carlos Oliveira",
@@ -484,14 +511,20 @@
                 tags: ["brioche", "doce", "café da manhã"]
             },
             {
-                id: 3,
+                id: generateId(),
                 title: "Croissant de Forno",
                 description: "Croissants caseiros que rivalizam com os da melhor padaria. Processo demorado mas resultado incrível!",
                 author: "Ana Costa",
                 date: "2023-06-10",
                 tags: ["croissant", "francês", "artesanal"]
             }
-        ];
+        ]);
+
+        let stats = loadFromStorage('paesStats', {
+            members: 1248,
+            posts: 3562,
+            comments: 8934
+        });
 
         // Funções para manipulação do DOM
         function openModal(modalId) {
@@ -500,6 +533,12 @@
 
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
+        }
+
+        function updateStats() {
+            document.getElementById('membersCount').textContent = stats.members.toLocaleString();
+            document.getElementById('postsCount').textContent = stats.posts.toLocaleString();
+            document.getElementById('commentsCount').textContent = stats.comments.toLocaleString();
         }
 
         function renderPosts() {
@@ -524,7 +563,7 @@
                             ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                         <div class="post-actions">
-                            <button class="action-btn">
+                            <button class="action-btn" onclick="likePost('${post.id}')">
                                 <i class="fas fa-heart"></i> Curtir
                             </button>
                             <button class="action-btn">
@@ -545,6 +584,14 @@
             return new Date(dateString).toLocaleDateString('pt-BR', options);
         }
 
+        function likePost(postId) {
+            // Incrementa contador de comentários como exemplo
+            stats.comments += 1;
+            saveToStorage('paesStats', stats);
+            updateStats();
+            alert('Post curtido! Obrigado por sua interação.');
+        }
+
         // Evento para o formulário de nova postagem
         document.getElementById('postForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -555,7 +602,7 @@
             const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()) : [];
             
             const newPost = {
-                id: posts.length + 1,
+                id: generateId(),
                 title: title,
                 description: description,
                 author: "Você",
@@ -564,11 +611,21 @@
             };
             
             posts.unshift(newPost);
+            stats.posts += 1;
+            
+            // Salva no localStorage
+            saveToStorage('paesPosts', posts);
+            saveToStorage('paesStats', stats);
+            
+            // Atualiza interface
             renderPosts();
+            updateStats();
             closeModal('postModal');
             
             // Resetar o formulário
             this.reset();
+            
+            alert('Postagem criada com sucesso!');
         });
 
         // Fechar modal ao clicar fora
@@ -580,6 +637,7 @@
 
         // Inicializar a página
         document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
             renderPosts();
         });
     </script>
